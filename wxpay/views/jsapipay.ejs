@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="application/javascript">
+        window.onload=function () {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        };
+        function jsApiCall()
+        {
+            WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest',
+                    {
+                        "appId" : "<%=appid%>", //公众号名称，由商户传入
+                        "timeStamp" : "<%=timeStamp%>", //时间戳，自1970年以来的秒数
+                        "nonceStr" : "<%=nonce_str%>", //随机串
+                        "package" : "prepay_id=<%=prepay_id%>",
+                        "signType" : "MD5", //微信签名方式：
+                        "paySign" : "<%=_paySignjs%>" //微信签名
+                    },
+            function(res){
+                WeixinJSBridge.log(res.err_msg);
+                if(res.err_msg=='get_brand_wcpay_request:ok')
+			window.location.href='result/success';
+		else
+			window.location.href='result/fail';
+            }
+        );
+        }
+    </script>
+</head>
+<body>
+
+</body>
+</html>
+
